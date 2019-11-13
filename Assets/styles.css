@@ -1,0 +1,13 @@
+.containAll{
+    border: solid rgb(97, 97, 97) 1px;
+    padding:0px;
+}
+
+.headerMain{
+    background-color: rgb(97, 97, 97);
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-size: 4rem;
+    
+}
