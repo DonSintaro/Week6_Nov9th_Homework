@@ -15,9 +15,9 @@ var city;
 var cityID;
 
 
-var currentWeatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=";
-var fiveDayForcast = "http://api.openweathermap.org/data/2.5/forecast?id=";
-var DayUV = "http://api.openweathermap.org/data/2.5/uvi?" + apiKey;
+var currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=";
+var fiveDayForcast = "https://api.openweathermap.org/data/2.5/forecast?id=";
+var DayUV = "https://api.openweathermap.org/data/2.5/uvi?" + apiKey;
 
 
 if (arrayHist != null ){
