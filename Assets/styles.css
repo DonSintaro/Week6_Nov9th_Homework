@@ -1,6 +1,7 @@
 .containAll{
     border: solid rgb(97, 97, 97) 1px;
-    padding:0px;
+    padding:15px;
+
 }
 
 .headerMain{
@@ -10,4 +11,56 @@
     padding: 30px;
     font-size: 4rem;
     
+}
+
+.citySearch{
+    background-color: rgb(243, 243, 243);
+    padding:10px;
+    
+}
+
+.currentInfo{
+    border: rgb(97, 97, 97) solid 1px;
+    padding: 10px;
+}
+
+#uvSpan{
+
+    padding: 3px;
+    background-color:rgb(153, 0, 0);
+    color: white;
+    border-radius: 4px;
+}
+.historical8{
+    width: 100%;
+}
+.histBtn{
+    width: 100%;
+    background-color: seashell;
+}
+
+.fiveDay{
+    margin-top:10px;
+}
+
+.someDay{
+    background-color: rgb(71, 117, 255);
+    color:white;
+    border-radius: 5px;
+    padding: 5px;
+    display:inline-block;
+    margin:5px;
+}
+
+@media screen and (max-width: 767px) {
+    .headerMain{
+        font-size:3rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container{
+        margin:0;
+        padding:0;
+    }
 }
