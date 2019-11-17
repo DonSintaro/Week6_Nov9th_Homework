@@ -20,7 +20,7 @@ var fiveDayForcast = "https://api.openweathermap.org/data/2.5/forecast?id=";
 var DayUV = "https://api.openweathermap.org/data/2.5/uvi?" + apiKey;
 
 
-if (arrayHist != null ){
+if (arrayHist[0] != null || arrayHist[0] != undefined){
     MakeButtons();
     city = arrayHist[0];
     getCurrentDay();
