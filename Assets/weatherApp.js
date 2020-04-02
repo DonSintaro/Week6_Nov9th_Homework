@@ -1,5 +1,4 @@
 
-
 var arrayHist = JSON.parse(localStorage.getItem("hist8")) || [];
 var arrayImg =["Assets/Images/60x60.png","Assets/Images/sunny.png","Assets/Images/rainybig.png","Assets/Images/cloudy.png","Assets/Images/hazy.png","Assets/Images/snow.png"];
 var array5Days = [0,8,16,24,32];
@@ -14,7 +13,7 @@ var lon;
 var city;
 var cityID;
 
-
+var histWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?id="
 var currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=";
 var fiveDayForcast = "https://api.openweathermap.org/data/2.5/forecast?id=";
 var DayUV = "https://api.openweathermap.org/data/2.5/uvi?" + apiKey;
@@ -22,8 +21,8 @@ var DayUV = "https://api.openweathermap.org/data/2.5/uvi?" + apiKey;
 
 if (arrayHist[0] != null || arrayHist[0] != undefined){
     MakeButtons();
-    city = arrayHist[0];
-    getCurrentDay();
+    cityID = arrayHist[0].id;
+    getHistDay();
 }
 
 
@@ -41,10 +40,37 @@ $(".submitC").on("click",function(){
 })
 
 $(document).on("click",".histBtn",function(){
-    city = $(this).attr("data-name");
+    cityID = $(this).attr("data-name");
 
-    getCurrentDay();
+    getHistDay();
 })
+
+
+function getHistDay(){
+    $.ajax({
+        url: (histWeatherAPI  + cityID +"&"+ apiKey),
+        method: "GET"   
+    })
+    .then(function(info){
+        console.log(info);
+        lat = info.coord.lat;
+        lon = info.coord.lon;
+        cityID = info.id;
+        $("#searchedCity").text(info.name + " (" +moment().format('L') + ")");
+        $("#currentTemp").text("Temperature: " + KtoF(info.main.temp) + " F");
+        $("#humidity").text("Humidity: " + info.main.humidity + "%");
+        $("#wind").text("Wind Speed: " + info.wind.speed + " MPH");
+        get5Day(cityID);
+        getUV(lon,lat);
+        checkDups(info.id,info.name);   
+
+
+
+        
+    }).catch(function(error){
+        console.log(error);
+    });
+}
 
 
 function getCurrentDay(){
@@ -63,7 +89,7 @@ function getCurrentDay(){
         $("#wind").text("Wind Speed: " + info.wind.speed + " MPH");
         get5Day(cityID);
         getUV(lon,lat);
-        checkDups(info.name);   
+        checkDups(info.id,info.name);   
 
 
 
@@ -121,9 +147,13 @@ function makeSomeDays(x,response){
     `
 }
 
-function makeHistBtn(y){
+/////
+
+function makeHistBtn(y,i){
+    console.log(i);
+    console.log(y);
     return `
-        <button type="button" class="btn btn-outline-secondary histBtn" data-name="${y}">${y}</button>
+        <button type="button" class="btn btn-outline-secondary histBtn" data-name="${y}">${i}</button>
     `;
 }
 
@@ -141,22 +171,22 @@ function weatherCode(x){
     else { return arrayImg[0]}
 }
 
-function checkDups(city){
+function checkDups(id,city){
    var check = true;
     if (arrayHist[0]){
         arrayHist.forEach(function(iter){
-            if (iter == city){
-                removeItem(city);
-                arrayHist.unshift(city);
+            if (iter.id == id){
+                removeItem(iter);
+                arrayHist.unshift({id,city});
                 check = false;
             }
         })
         if (check != false){
-            arrayHist.unshift(city);
+            arrayHist.unshift({id,city});
         }
     }
     else{
-        arrayHist.unshift(city);
+        arrayHist.unshift({id,city});
     }
     if (arrayHist.length >= 9){
         console.log("gothere")
@@ -168,7 +198,7 @@ function checkDups(city){
 }
 function removeItem(y){
     arrayHist.forEach(function(x,i){
-        if (y == x){
+        if (y.id == x.id){
            arrayHist.splice(i,1);
         }
     })
@@ -178,8 +208,8 @@ function removeItem(y){
 function MakeButtons(){
 
     $(".historical8").html("");
-    arrayHist.forEach(function(city){
-        $(".historical8").append(makeHistBtn(city));
+    arrayHist.forEach(function(iter){
+        $(".historical8").append(makeHistBtn(iter.id, iter.city));
     })
 }
 
