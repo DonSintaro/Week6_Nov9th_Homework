@@ -10,3 +10,6 @@ note from documentation: If API call is succefull - 200 HTTP-code is returned. I
 ** Also, because api documentation did not provide weather codes for every possible catagory, I was not able to get an image for all weather types, however, majority of the 90% are there.
 
 Jeffrey Arriaga
+
+
+https://donsintaro.github.io/Week6_Nov9th_Homework/
