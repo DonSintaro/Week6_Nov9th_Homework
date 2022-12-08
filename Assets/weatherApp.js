@@ -7,7 +7,7 @@ var histCount = 0;
 
 
 
-var apiKey = "appid=bab66fa9fd2ae33cb9ded43d331a294c";
+var apiKey = "appid=c1365fc533fd820de790ca5c43b28ea4";  //free api 3/5/2022
 var lat;
 var lon;
 var city;
@@ -62,7 +62,7 @@ function getHistDay(){
         $("#wind").text("Wind Speed: " + info.wind.speed + " MPH");
         get5Day(cityID);
         getUV(lon,lat);
-        checkDups(info.id,info.name);   
+        checkDups(info.id,info.name,info.sys.country);   
 
 
 
@@ -79,6 +79,7 @@ function getCurrentDay(){
         method: "GET"   
     })
     .then(function(info){
+        console.log("currentDayObj")
         console.log(info);
         lat = info.coord.lat;
         lon = info.coord.lon;
@@ -89,13 +90,14 @@ function getCurrentDay(){
         $("#wind").text("Wind Speed: " + info.wind.speed + " MPH");
         get5Day(cityID);
         getUV(lon,lat);
-        checkDups(info.id,info.name);   
+        checkDups(info.id,info.name,info.sys.country);   
 
 
 
         
     }).catch(function(error){
         console.log(error);
+        window.alert('Unable to find location, please check your spelling and/or specify more detail.')
     });
 }
 
@@ -149,11 +151,11 @@ function makeSomeDays(x,response){
 
 /////
 
-function makeHistBtn(y,i){
+function makeHistBtn(y,i,c){
     console.log(i);
     console.log(y);
     return `
-        <button type="button" class="btn btn-outline-secondary histBtn" data-name="${y}">${i}</button>
+        <button type="button" class="btn btn-outline-secondary histBtn" data-name="${y}">${i}, ${c} </button>
     `;
 }
 
@@ -171,22 +173,22 @@ function weatherCode(x){
     else { return arrayImg[0]}
 }
 
-function checkDups(id,city){
+function checkDups(id,city,country){
    var check = true;
     if (arrayHist[0]){
         arrayHist.forEach(function(iter){
             if (iter.id == id){
                 removeItem(iter);
-                arrayHist.unshift({id,city});
+                arrayHist.unshift({id,city,country});
                 check = false;
             }
         })
         if (check != false){
-            arrayHist.unshift({id,city});
+            arrayHist.unshift({id,city,country});
         }
     }
     else{
-        arrayHist.unshift({id,city});
+        arrayHist.unshift({id,city,country});
     }
     if (arrayHist.length >= 9){
         console.log("gothere")
@@ -209,7 +211,7 @@ function MakeButtons(){
 
     $(".historical8").html("");
     arrayHist.forEach(function(iter){
-        $(".historical8").append(makeHistBtn(iter.id, iter.city));
+        $(".historical8").append(makeHistBtn(iter.id, iter.city, iter.country));
     })
 }
 
